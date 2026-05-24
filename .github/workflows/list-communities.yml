@@ -1,0 +1,49 @@
+name: List mixi2 communities
+
+on:
+  workflow_dispatch:
+    inputs:
+      categories:
+        description: "Comma-separated arXiv categories"
+        required: false
+        default: "math.CT,math.AG,math.FA"
+
+permissions:
+  contents: read
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.6"
+          cache: true
+
+      - name: List communities
+        env:
+          MIXI2_TOKEN_URL: ${{ secrets.MIXI2_TOKEN_URL }}
+          MIXI2_API_ADDRESS: ${{ secrets.MIXI2_API_ADDRESS }}
+          MIXI2_MATH_CT_CLIENT_ID: ${{ secrets.MIXI2_MATH_CT_CLIENT_ID }}
+          MIXI2_MATH_CT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_CT_CLIENT_SECRET }}
+          MIXI2_MATH_AG_CLIENT_ID: ${{ secrets.MIXI2_MATH_AG_CLIENT_ID }}
+          MIXI2_MATH_AG_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_AG_CLIENT_SECRET }}
+          MIXI2_MATH_AT_CLIENT_ID: ${{ secrets.MIXI2_MATH_AT_CLIENT_ID }}
+          MIXI2_MATH_AT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_AT_CLIENT_SECRET }}
+          MIXI2_MATH_RT_CLIENT_ID: ${{ secrets.MIXI2_MATH_RT_CLIENT_ID }}
+          MIXI2_MATH_RT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_RT_CLIENT_SECRET }}
+          MIXI2_MATH_NT_CLIENT_ID: ${{ secrets.MIXI2_MATH_NT_CLIENT_ID }}
+          MIXI2_MATH_NT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_NT_CLIENT_SECRET }}
+          MIXI2_MATH_AC_CLIENT_ID: ${{ secrets.MIXI2_MATH_AC_CLIENT_ID }}
+          MIXI2_MATH_AC_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_AC_CLIENT_SECRET }}
+          MIXI2_MATH_KT_CLIENT_ID: ${{ secrets.MIXI2_MATH_KT_CLIENT_ID }}
+          MIXI2_MATH_KT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_KT_CLIENT_SECRET }}
+          MIXI2_MATH_OA_CLIENT_ID: ${{ secrets.MIXI2_MATH_OA_CLIENT_ID }}
+          MIXI2_MATH_OA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_OA_CLIENT_SECRET }}
+          MIXI2_MATH_FA_CLIENT_ID: ${{ secrets.MIXI2_MATH_FA_CLIENT_ID }}
+          MIXI2_MATH_FA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_FA_CLIENT_SECRET }}
+          MIXI2_MATH_RA_CLIENT_ID: ${{ secrets.MIXI2_MATH_RA_CLIENT_ID }}
+          MIXI2_MATH_RA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_RA_CLIENT_SECRET }}
+        run: go run ./cmd/list-communities --categories "${{ inputs.categories }}"
