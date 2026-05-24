@@ -47,8 +47,8 @@ func TestRunCategoryInitializeOnlyMarksWithoutCredentials(t *testing.T) {
 }
 
 func TestRunCategoryPostFailureDoesNotMark(t *testing.T) {
-	t.Setenv(config.ClientIDEnv, "client-id")
-	t.Setenv(config.ClientSecretEnv, "client-secret")
+	t.Setenv("MIXI2_MATH_CT_CLIENT_ID", "client-id")
+	t.Setenv("MIXI2_MATH_CT_CLIENT_SECRET", "client-secret")
 	t.Setenv(config.TokenURLEnv, "https://token.example")
 	t.Setenv(config.APIAddressEnv, "api.example:443")
 	t.Setenv(config.CommunityIDEnv, "community-id")

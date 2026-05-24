@@ -113,7 +113,7 @@ func runCategory(ctx context.Context, category string, store state.Store, httpCl
 		return nil
 	}
 
-	creds, err := config.LoadCredentials()
+	creds, err := config.LoadCredentials(category)
 	if err != nil {
 		return err
 	}
