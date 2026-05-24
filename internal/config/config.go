@@ -15,9 +15,8 @@ type Credentials struct {
 }
 
 const (
-	TokenURLEnv    = "MIXI2_TOKEN_URL"
-	APIAddressEnv  = "MIXI2_API_ADDRESS"
-	CommunityIDEnv = "MIXI2_COMMUNITY_ID"
+	TokenURLEnv   = "MIXI2_TOKEN_URL"
+	APIAddressEnv = "MIXI2_API_ADDRESS"
 )
 
 func EnvPrefix(category string) string {
@@ -32,7 +31,7 @@ func LoadCredentials(category string) (Credentials, error) {
 		ClientSecret: os.Getenv(prefix + "_CLIENT_SECRET"),
 		TokenURL:     os.Getenv(TokenURLEnv),
 		APIAddress:   os.Getenv(APIAddressEnv),
-		CommunityID:  os.Getenv(CommunityIDEnv),
+		CommunityID:  os.Getenv(prefix + "_COMMUNITY_ID"),
 	}
 
 	var missing []string
@@ -49,7 +48,7 @@ func LoadCredentials(category string) (Credentials, error) {
 		missing = append(missing, APIAddressEnv)
 	}
 	if creds.CommunityID == "" {
-		missing = append(missing, CommunityIDEnv)
+		missing = append(missing, prefix+"_COMMUNITY_ID")
 	}
 	if len(missing) > 0 {
 		return Credentials{}, fmt.Errorf("missing environment variables for %s: %s", category, strings.Join(missing, ", "))

@@ -14,9 +14,9 @@ func TestEnvPrefix(t *testing.T) {
 func TestLoadCredentials(t *testing.T) {
 	t.Setenv("MIXI2_MATH_CT_CLIENT_ID", "client-id")
 	t.Setenv("MIXI2_MATH_CT_CLIENT_SECRET", "client-secret")
+	t.Setenv("MIXI2_MATH_CT_COMMUNITY_ID", "community-id")
 	t.Setenv(TokenURLEnv, "https://token.example")
 	t.Setenv(APIAddressEnv, "api.example:443")
-	t.Setenv(CommunityIDEnv, "community-id")
 
 	creds, err := LoadCredentials("math.CT")
 	if err != nil {
@@ -41,7 +41,7 @@ func TestLoadCredentialsMissing(t *testing.T) {
 	if !strings.Contains(err.Error(), APIAddressEnv) {
 		t.Fatalf("error %q does not include missing shared API address env name", err)
 	}
-	if !strings.Contains(err.Error(), CommunityIDEnv) {
+	if !strings.Contains(err.Error(), "MIXI2_MATH_AG_COMMUNITY_ID") {
 		t.Fatalf("error %q does not include missing community ID env name", err)
 	}
 }

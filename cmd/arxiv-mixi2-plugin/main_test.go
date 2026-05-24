@@ -49,9 +49,9 @@ func TestRunCategoryInitializeOnlyMarksWithoutCredentials(t *testing.T) {
 func TestRunCategoryPostFailureDoesNotMark(t *testing.T) {
 	t.Setenv("MIXI2_MATH_CT_CLIENT_ID", "client-id")
 	t.Setenv("MIXI2_MATH_CT_CLIENT_SECRET", "client-secret")
+	t.Setenv("MIXI2_MATH_CT_COMMUNITY_ID", "community-id")
 	t.Setenv(config.TokenURLEnv, "https://token.example")
 	t.Setenv(config.APIAddressEnv, "api.example:443")
-	t.Setenv(config.CommunityIDEnv, "community-id")
 	store := state.Store{}
 	client := htmlClient(`<h3>New submissions</h3><dl>
 <dt><span class="list-identifier"><a href="/abs/2501.00001">arXiv:2501.00001</a></span></dt>

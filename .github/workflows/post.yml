@@ -40,27 +40,36 @@ jobs:
         env:
           MIXI2_TOKEN_URL: ${{ secrets.MIXI2_TOKEN_URL }}
           MIXI2_API_ADDRESS: ${{ secrets.MIXI2_API_ADDRESS }}
-          MIXI2_COMMUNITY_ID: ${{ secrets.MIXI2_COMMUNITY_ID }}
           MIXI2_MATH_CT_CLIENT_ID: ${{ secrets.MIXI2_MATH_CT_CLIENT_ID }}
           MIXI2_MATH_CT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_CT_CLIENT_SECRET }}
+          MIXI2_MATH_CT_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_CT_COMMUNITY_ID }}
           MIXI2_MATH_AG_CLIENT_ID: ${{ secrets.MIXI2_MATH_AG_CLIENT_ID }}
           MIXI2_MATH_AG_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_AG_CLIENT_SECRET }}
+          MIXI2_MATH_AG_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_AG_COMMUNITY_ID }}
           MIXI2_MATH_AT_CLIENT_ID: ${{ secrets.MIXI2_MATH_AT_CLIENT_ID }}
           MIXI2_MATH_AT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_AT_CLIENT_SECRET }}
+          MIXI2_MATH_AT_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_AT_COMMUNITY_ID }}
           MIXI2_MATH_RT_CLIENT_ID: ${{ secrets.MIXI2_MATH_RT_CLIENT_ID }}
           MIXI2_MATH_RT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_RT_CLIENT_SECRET }}
+          MIXI2_MATH_RT_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_RT_COMMUNITY_ID }}
           MIXI2_MATH_NT_CLIENT_ID: ${{ secrets.MIXI2_MATH_NT_CLIENT_ID }}
           MIXI2_MATH_NT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_NT_CLIENT_SECRET }}
+          MIXI2_MATH_NT_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_NT_COMMUNITY_ID }}
           MIXI2_MATH_AC_CLIENT_ID: ${{ secrets.MIXI2_MATH_AC_CLIENT_ID }}
           MIXI2_MATH_AC_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_AC_CLIENT_SECRET }}
+          MIXI2_MATH_AC_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_AC_COMMUNITY_ID }}
           MIXI2_MATH_KT_CLIENT_ID: ${{ secrets.MIXI2_MATH_KT_CLIENT_ID }}
           MIXI2_MATH_KT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_KT_CLIENT_SECRET }}
+          MIXI2_MATH_KT_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_KT_COMMUNITY_ID }}
           MIXI2_MATH_OA_CLIENT_ID: ${{ secrets.MIXI2_MATH_OA_CLIENT_ID }}
           MIXI2_MATH_OA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_OA_CLIENT_SECRET }}
+          MIXI2_MATH_OA_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_OA_COMMUNITY_ID }}
           MIXI2_MATH_FA_CLIENT_ID: ${{ secrets.MIXI2_MATH_FA_CLIENT_ID }}
           MIXI2_MATH_FA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_FA_CLIENT_SECRET }}
+          MIXI2_MATH_FA_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_FA_COMMUNITY_ID }}
           MIXI2_MATH_RA_CLIENT_ID: ${{ secrets.MIXI2_MATH_RA_CLIENT_ID }}
           MIXI2_MATH_RA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_RA_CLIENT_SECRET }}
+          MIXI2_MATH_RA_COMMUNITY_ID: ${{ secrets.MIXI2_MATH_RA_COMMUNITY_ID }}
         run: |
           args=()
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ inputs.categories }}" ]]; then
