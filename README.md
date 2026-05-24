@@ -58,7 +58,7 @@ go run ./cmd/list-communities --categories math.CT
 
 ## GitHub Actions
 
-`.github/workflows/post.yml` は毎日 13:00 / 14:30 / 16:00 JST に実行されます。新しい投稿済み ID が記録された場合は、`data/posted.json` を自動で commit します。
+`.github/workflows/post.yml` は毎日 12:00 / 13:30 / 15:00 JST に実行されます。新しい投稿済み ID が記録された場合は、`data/posted.json` を自動で commit します。
 
 ## mixi2 Plugin 側の設定
 
