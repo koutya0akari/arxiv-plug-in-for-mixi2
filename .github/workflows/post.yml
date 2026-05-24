@@ -1,0 +1,67 @@
+name: Post arXiv papers to mixi2 community
+
+on:
+  schedule:
+    - cron: "17 4 * * *"
+    - cron: "47 4 * * *"
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+    inputs:
+      categories:
+        description: "Comma-separated arXiv categories"
+        required: false
+        default: "math.CT,math.AG,math.AT,math.RT,math.NT,math.AC,math.KT,math.OA,math.FA,math.RA"
+      post_initial_state:
+        description: "Post even when data/posted.json is empty"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.6"
+          cache: true
+
+      - name: Test
+        run: go test ./...
+
+      - name: Run plug-in
+        env:
+          MIXI2_CLIENT_ID: ${{ secrets.MIXI2_CLIENT_ID }}
+          MIXI2_CLIENT_SECRET: ${{ secrets.MIXI2_CLIENT_SECRET }}
+          MIXI2_TOKEN_URL: ${{ secrets.MIXI2_TOKEN_URL }}
+          MIXI2_API_ADDRESS: ${{ secrets.MIXI2_API_ADDRESS }}
+          MIXI2_COMMUNITY_ID: ${{ secrets.MIXI2_COMMUNITY_ID }}
+        run: |
+          args=()
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ inputs.categories }}" ]]; then
+            args+=(--categories "${{ inputs.categories }}")
+          fi
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.post_initial_state }}" == "true" ]]; then
+            args+=(--initialize-on-empty=false)
+          fi
+          go run ./cmd/arxiv-mixi2-plugin "${args[@]}"
+
+      - name: Commit state
+        if: always()
+        run: |
+          if [[ -z "$(git status --porcelain -- data/posted.json)" ]]; then
+            echo "No state changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/posted.json
+          git commit -m "Update posted arXiv state"
+          git push
