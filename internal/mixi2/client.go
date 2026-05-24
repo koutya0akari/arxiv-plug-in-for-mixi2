@@ -17,6 +17,12 @@ type Poster interface {
 	Close() error
 }
 
+type Community struct {
+	ID                   string
+	Name                 string
+	ApplicationVersionID string
+}
+
 type Client struct {
 	authenticator auth.Authenticator
 	conn          *grpc.ClientConn
@@ -57,6 +63,41 @@ func (c *Client) Post(ctx context.Context, text string) error {
 		return fmt.Errorf("create post: %w", err)
 	}
 	return nil
+}
+
+func (c *Client) Communities(ctx context.Context) ([]Community, error) {
+	authCtx, err := c.authenticator.AuthorizedContext(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("authorize: %w", err)
+	}
+
+	var communities []Community
+	var cursor *string
+	for {
+		resp, err := c.client.GetCommunitiesUsingApplication(authCtx, &applicationapiv1.GetCommunitiesUsingApplicationRequest{
+			Cursor: cursor,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("get communities using application: %w", err)
+		}
+		for _, usingApplication := range resp.GetCommunitiesUsingApplication() {
+			community := usingApplication.GetCommunity()
+			if community == nil {
+				continue
+			}
+			communities = append(communities, Community{
+				ID:                   community.GetCommunityId(),
+				Name:                 community.GetName(),
+				ApplicationVersionID: usingApplication.GetApplicationVersionId(),
+			})
+		}
+		nextCursor := resp.GetNextCursor()
+		if nextCursor == "" {
+			break
+		}
+		cursor = &nextCursor
+	}
+	return communities, nil
 }
 
 func (c *Client) Close() error {

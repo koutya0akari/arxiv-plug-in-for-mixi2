@@ -50,6 +50,12 @@ go run ./cmd/arxiv-mixi2-plugin --initialize-only
 go run ./cmd/arxiv-mixi2-plugin --categories math.CT,math.AG
 ```
 
+インストール済みコミュニティの ID を確認します。このコマンドは `MIXI2_<CATEGORY>_COMMUNITY_ID` を必要とせず、Client ID / Client Secret / Token URL / API Address だけで実行できます。
+
+```sh
+go run ./cmd/list-communities --categories math.CT
+```
+
 ## GitHub Actions
 
 `.github/workflows/post.yml` は毎日 13:00 / 14:30 / 16:00 JST に実行されます。新しい投稿済み ID が記録された場合は、`data/posted.json` を自動で commit します。

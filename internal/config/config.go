@@ -25,13 +25,25 @@ func EnvPrefix(category string) string {
 }
 
 func LoadCredentials(category string) (Credentials, error) {
+	creds, err := LoadApplicationCredentials(category)
+	if err != nil {
+		return Credentials{}, err
+	}
+	prefix := EnvPrefix(category)
+	creds.CommunityID = os.Getenv(prefix + "_COMMUNITY_ID")
+	if creds.CommunityID == "" {
+		return Credentials{}, fmt.Errorf("missing environment variables for %s: %s", category, prefix+"_COMMUNITY_ID")
+	}
+	return creds, nil
+}
+
+func LoadApplicationCredentials(category string) (Credentials, error) {
 	prefix := EnvPrefix(category)
 	creds := Credentials{
 		ClientID:     os.Getenv(prefix + "_CLIENT_ID"),
 		ClientSecret: os.Getenv(prefix + "_CLIENT_SECRET"),
 		TokenURL:     os.Getenv(TokenURLEnv),
 		APIAddress:   os.Getenv(APIAddressEnv),
-		CommunityID:  os.Getenv(prefix + "_COMMUNITY_ID"),
 	}
 
 	var missing []string
@@ -46,9 +58,6 @@ func LoadCredentials(category string) (Credentials, error) {
 	}
 	if creds.APIAddress == "" {
 		missing = append(missing, APIAddressEnv)
-	}
-	if creds.CommunityID == "" {
-		missing = append(missing, prefix+"_COMMUNITY_ID")
 	}
 	if len(missing) > 0 {
 		return Credentials{}, fmt.Errorf("missing environment variables for %s: %s", category, strings.Join(missing, ", "))
