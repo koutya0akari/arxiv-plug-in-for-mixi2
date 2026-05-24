@@ -28,7 +28,7 @@ func main() {
 		log.Fatal("no categories configured")
 	}
 
-	fmt.Println("category\tcommunity_id\tname\tapplication_version_id")
+	fmt.Println("category\tcommunity_id\tname\tapplication_version_id\trequirements")
 	hadError := false
 	for _, category := range categories {
 		if err := listCategory(category, *requestTimeout); err != nil {
@@ -59,7 +59,7 @@ func listCategory(category string, requestTimeout time.Duration) error {
 		return err
 	}
 	for _, community := range communities {
-		fmt.Printf("%s\t%s\t%s\t%s\n", category, community.ID, community.Name, community.ApplicationVersionID)
+		fmt.Printf("%s\t%s\t%s\t%s\t%s\n", category, community.ID, community.Name, community.ApplicationVersionID, strings.Join(community.Requirements, ","))
 	}
 	return nil
 }

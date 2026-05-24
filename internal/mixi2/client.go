@@ -21,6 +21,7 @@ type Community struct {
 	ID                   string
 	Name                 string
 	ApplicationVersionID string
+	Requirements         []string
 }
 
 type Client struct {
@@ -80,15 +81,23 @@ func (c *Client) Communities(ctx context.Context) ([]Community, error) {
 		if err != nil {
 			return nil, fmt.Errorf("get communities using application: %w", err)
 		}
+		requirementsByVersion := map[string][]string{}
+		for _, version := range resp.GetApplicationVersions() {
+			for _, requirement := range version.GetRequirements() {
+				requirementsByVersion[version.GetApplicationVersionId()] = append(requirementsByVersion[version.GetApplicationVersionId()], requirement.String())
+			}
+		}
 		for _, usingApplication := range resp.GetCommunitiesUsingApplication() {
 			community := usingApplication.GetCommunity()
 			if community == nil {
 				continue
 			}
+			versionID := usingApplication.GetApplicationVersionId()
 			communities = append(communities, Community{
 				ID:                   community.GetCommunityId(),
 				Name:                 community.GetName(),
-				ApplicationVersionID: usingApplication.GetApplicationVersionId(),
+				ApplicationVersionID: versionID,
+				Requirements:         requirementsByVersion[versionID],
 			})
 		}
 		nextCursor := resp.GetNextCursor()
